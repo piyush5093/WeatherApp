@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Weather-App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        *{
+    margin:0;
+    padding: 0;
+    font-family: "Poppins", serif;
+    box-sizing: border-box;
+
+}
+body{
+    background: #222;
+}
+.card{
+    width:40%;
+    color: white;
+    max-width:470px;
+    margin: 100px auto 0;
+    border-radius: 20px;
+    padding: 30px 7px;
+    text-align: center;
+    background-color: #08AEEA;
+    background-color: #08AEEA;
+    background-image: linear-gradient(256deg, #43e0ec 0%, #3bdf95 97%);
+
+
+   
+   
+
+    transition:background 4s ease-in-out 1s;
+    
+}
+.search{
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.search input{
+    width:10px;
+    border:0;
+    outline:0;
+    border-radius:30px;
+    flex:1;
+    padding:4px 10px;
+    margin-right:3px;
+    
+    height:45px;
+    font-size:1.1rem;
+
+
+}
+.search button{
+    border:0;
+    outline:0;
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background-color: white;
+    cursor: pointer;
+
+
+}
+.search button img{
+    width:16px;
+    margin-top:7px;
+}
+.weather-icon{
+    width:150px;
+    margin-top: 30px;
+}
+.weather h1{
+    font-size:80px;
+    font-weight: 500;
+}
+.weather h2{
+    font-size:45px;
+    font-weight: 400;
+    margin-top:-16px;
+}
+.details{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top:50px;
+    padding:0 5px;
+
+
+}
+.col{
+    display: flex;
+    text-align: left;
+}
+.col img{
+    width:30px;
+    height:30px;
+    margin-right:10px;
+}
+.humadity,.wind{
+    font-size:20px;
+    margin-top:-6px;
+
+}
+.weather{
+    display: none;
+
+}
+.error{
+    margin-top:6px;
+    margin-bottom:-10px;
+    text-align:left;
+    padding-left:13px;
+    font-size:1rem;
+    display: none;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="enter city name" spellcheck="false">
+            <button id="search"><img src="images/search.png" alt=""></button>
+        </div>
+        <div class="error">
+            <p>Invalid City Name !!!</p>
+        </div>
+        <div class="weather">
+            <img src="images/rain.png" alt="" class="weather-icon">
+            <h1 class="temp">29°C</h1>
+            <h2 class="cityname">Mumbai</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="images/humidity.png" alt="">
+                    <div>
+                        <p class="humadity">50%</p>
+                        <p>Humadity</p>
+                    </div>
+                    
+
+                </div>
+                <div class="col">
+                    <img src="images/wind.png" alt="">
+                    <div>
+                        <p class="wind">13.5km/hr</p>
+                        <p>Wind</p>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const key='dfa3ef39aa4d3330b79749b25789c2dc';
+
+let api='https://api.openweathermap.org/data/2.5/weather?units=metric';
+let input=document.querySelector("input");
+
+
+async function check(){
+    try{
+    
+    document.querySelector(".error").style.display="none";
+    let city=input.value;
+    let result=await axios.get(api+`&appid=${key}&q=${city}`);
+    
+    
+
+    let cityname=result.data.name;
+
+    let temp=result.data.main.temp;
+    let humidity=result.data.main.
+    humidity;
+    let wind=result.data.wind.speed;
+    let h1=document.querySelector(".temp");
+    console.log(temp);
+    console.log(result.data);
+    h1.innerText=`${Math.round(temp)}°C`;
+    document.querySelector(".cityname").innerText=`${cityname}`;
+    document.querySelector(".humadity").innerText=`${humidity}%`;
+    document.querySelector(".wind").innerText=`${wind}km/hr`;
+    if(result.data.weather[0].main=="Clear"){
+        document.querySelector(".weather img").src='images/clear.png'
+    }
+    if(result.data.weather[0].main=="Clear"){
+        document.querySelector(".weather img").src='images/clear.png'
+    }
+    if(result.data.weather[0].main=="Clouds"){
+        document.querySelector(".weather img").src='images/clouds.png'
+    }
+    if(result.data.weather[0].main=="Drizzle"){
+        document.querySelector(".weather img").src='images/drizzle.png'
+    }
+    if(result.data.weather[0].main=="Mist"){
+        document.querySelector(".weather img").src='images/mist.png'
+    }
+    if(result.data.weather[0].main=="Rain"){
+        document.querySelector(".weather img").src='images/rain.png'
+    }
+    if(result.data.weather[0].main=="Snow"){
+        document.querySelector(".weather img").src='images/snow.png'
+    }
+    let weather=document.querySelector(".weather");
+    weather.style.display="block";
+
+   
+    
+    
+
+    
+}
+    catch(err){
+        
+       
+        document.querySelector(".error").style.display="block";
+        document.querySelector(".weather").style.display="none";
+        
+
+        
+    }
+    
+    
+
+
+    
+    
+    
+
+}
+
+let search=document.querySelector("#search");
+search.addEventListener("click",function(){
+    
+    console.log("done")
+    
+    check();
+
+    
+
+
+})
+
+
+    
+
+
+
+    </script>
+
+
+</body>
+</html>
